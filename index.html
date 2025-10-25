@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>攝護腺癌基因治療報告與摘要</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .content-container {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            overflow: hidden;
+            opacity: 0;
+            max-height: 0;
+        }
+        .content-container.expanded {
+            max-height: 5000px; /* 設置一個足夠大的值來展開內容 */
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+        /* New styles from the AMPLITUDE report snippet */
+        .highlight {
+            background-color: #e0f2fe; /* Light blue */
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .code-emphasis code {
+            background-color: #f3f4f6;
+            padding: 1px 4px;
+            border-radius: 4px;
+            color: #dc2626; /* text-red-600 */
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8 flex justify-center">
+
+    <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden">
+        
+        <!-- 頂部標題區 -->
+        <header class="p-6 bg-teal-600 text-white rounded-t-xl">
+            <!-- 標題字體大小已調整為 text-4xl -->
+            <h1 class="text-4xl font-extrabold mb-1">攝護腺癌基因治療：<br>專業報告</h1>
+            <p class="text-teal-200">文章摘要與全文閱覽</p>
+        </header>
+
+        <!-- 主內容區塊 -->
+        <div class="p-6">
+            
+            <!-- 文章摘要 (包含兩個報告的共同精華) -->
+            <section id="summarySection" class="mb-6 p-5 bg-indigo-50 border-l-4 border-indigo-500 rounded-lg shadow-inner">
+                <h2 class="text-xl font-bold text-indigo-700 mb-3 flex items-center">
+                    <i data-lucide="clipboard-list" class="w-5 h-5 mr-2"></i>
+                    文章摘要
+                </h2>
+                <div id="articleSummary" class="text-gray-700 leading-relaxed">
+                    <!-- 摘要內容將由 JavaScript 渲染 -->
+                </div>
+            </section>
+
+            <!-- 原始文章按鈕 -->
+            <!-- 調整 mb-4 -> mb-2 縮小標題與按鈕的距離 -->
+            <h3 class="text-lg font-semibold text-gray-800 mt-8 mb-2">深入閱讀：基因治療綜合報告</h3>
+            <button id="toggleOriginalButton" 
+                    class="w-full sm:w-auto px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300 ease-in-out flex items-center justify-center"
+                    onclick="toggleContent('originalArticleContainer', 'toggleOriginalIcon', 'toggleOriginalText')">
+                <i data-lucide="eye" class="w-5 h-5 mr-2" id="toggleOriginalIcon"></i>
+                <span id="toggleOriginalText">閱讀基因治療綜合報告</span>
+            </button>
+
+            <!-- 原始文章內容容器 -->
+            <div id="originalArticleContainer" class="content-container bg-gray-50 p-6 rounded-xl border border-gray-200 mt-6">
+                <h2 class="text-2xl font-bold text-teal-700 mt-0 mb-4 border-b-2 border-teal-500 pb-1">攝護腺癌基因治療與精準醫學的最新趨勢</h2>
+                <div id="articleContent" class="prose max-w-none text-gray-700">
+                    <!-- 完整文章內容將由 JavaScript 渲染 -->
+                </div>
+            </div>
+
+            <!-- AMPLITUDE 試驗報告按鈕 (新增) -->
+            <!-- 調整 mt-2 -> mt-1 縮小上一個按鈕與此標題的距離，並將 mb-4 -> mb-2 縮小標題與此按鈕的距離 -->
+            <h3 class="text-lg font-semibold text-gray-800 mt-1 mb-2">最新臨床試驗：AMPLITUDE 報告</h3>
+            <button id="toggleAmplitudeButton" 
+                    class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300 ease-in-out flex items-center justify-center"
+                    onclick="toggleContent('amplitudeReportContainer', 'toggleAmplitudeIcon', 'toggleAmplitudeText')">
+                <i data-lucide="external-link" class="w-5 h-5 mr-2" id="toggleAmplitudeIcon"></i>
+                <span id="toggleOriginalText">閱讀 AMPLITUDE 試驗報告</span>
+            </button>
+
+            <!-- AMPLITUDE 試驗報告內容容器 (新增) -->
+            <div id="amplitudeReportContainer" class="content-container bg-white rounded-xl shadow-lg border border-blue-200">
+                <!-- AMPLITUDE 報告的 HTML 內容將直接注入此處 -->
+            </div>
+
+        </div>
+        
+        <!-- 底部版權 -->
+        <footer class="p-4 text-center text-xs text-gray-500 border-t border-gray-200">
+            &copy; 2025 AI 輔助醫學資訊生成
+        </footer>
+    </div>
+
+    <script type="text/javascript">
+        // 確保 Lucide Icons 被渲染
+        lucide.createIcons();
+
+        // 完整文章內容 (原始報告)
+        const fullMarkdown = `
+
+### 引言
+
+攝護腺癌（Prostate Cancer）是全球男性中第二常見的癌症，尤其在老年男性中發病率高。儘管傳統的荷爾蒙療法、化療和放療能有效控制早期病變，但對於轉移性去勢抗性攝護腺癌（mCRPC）的患者而言，尋求更精準、更具針對性的治療方案至關重要。近年來，隨著分子生物學和基因工程技術的突破，基因治療與基於基因檢測的標靶療法已成為該領域中最令人振奮的前沿領域。
+
+基因治療的核心在於修正或彌補細胞內缺陷的基因，或將具有治療作用的基因導入癌細胞中，以達到抑制腫瘤生長、誘導癌細胞凋亡或增強免疫系統抗癌能力的目的。雖然純粹的「基因治療」（將治療基因導入體內）仍處於早期臨床試驗階段，但廣義上基於基因突變的精準標靶治療已在臨床上取得了重大成功。
+
+### 基因治療的主要策略與概念
+
+攝護腺癌的基因治療研究方向多元，主要圍繞以下幾種策略展開：
+
+1. 自殺基因療法（Suicide Gene Therapy）
+這類療法涉及將一種外源基因導入癌細胞。該基因編碼的酵素能夠將無毒的前驅藥物（prodrug）轉化為對細胞具有毒性的代謝物，從而選擇性地殺死癌細胞。例如，將皰疹病毒胸苷激酶（HSV-TK）基因導入癌細胞，然後給予患者更昔洛韋（Ganciclovir），毒性代謝物會在周圍產生「旁觀者效應」（Bystander Effect），殺死未被感染的癌細胞，達到更廣泛的治療效果。
+
+2. 腫瘤抑制基因療法（Tumor Suppressor Gene Therapy）
+許多攝護腺癌與抑癌基因（如 p53、 RB）失活有關。此療法旨在將正常的（野生型）抑癌基因導入癌細胞，以恢復其調控細胞週期、誘導凋亡的能力。儘管概念具有理論上的有效性，但臨床應用面臨挑戰，例如需要將治療基因高效地轉染至所有腫瘤細胞才能實現完全消退。
+
+3. 免疫基因療法（Immuno-Gene Therapy）
+此策略旨在增強患者自身的免疫系統來識別和攻擊癌細胞。常見的方法包括：
+* 溶瘤病毒（Oncolytic Viruses, OVs）： 使用經過基因改造的病毒，使其能選擇性地在癌細胞內複製並裂解細胞，同時釋放腫瘤抗原，刺激宿主免疫反應。
+* CAR-T 細胞療法： 儘管技術上屬於細胞療法，但其核心是基因工程。該療法涉及從患者體內提取 T 細胞，在體外透過基因改造使其表達嵌合抗原受體（CAR），通常針對攝護腺特異性膜抗原（PSMA）等高表達於攝護腺癌細胞表面的蛋白。CAR-T 細胞隨後被輸回患者體內，進行精準的免疫攻擊。
+
+### 基於基因突變的精準標靶治療突破
+
+在最近的臨床實踐中，基因檢測的重要性已大幅提高，它不再只是研究工具，而是決定治療方案的關鍵。特別是針對同源重組修復（Homologous Recombination Repair, HRR）基因突變的患者，標靶藥物取得了突破性進展。
+
+1. PARP 抑制劑（PARP Inhibitors）
+聚腺苷二磷酸核糖聚合酶（PARP）是參與 DNA 修復的關鍵酵素。在攜帶 HRR 基因突變（如 BRCA1 或 BRCA2）的癌細胞中，其 DNA 修復機制已經受損。PARP 抑制劑會進一步阻斷 PARP 介導的 DNA 修復途徑，導致癌細胞累積過多 DNA 損傷而死亡，這就是所謂的「合成致死」（Synthetic Lethality）原理。
+
+* 最新進展： 最近的研究（如 AMPLITUDE 試驗）顯示，將 PARP 抑制劑（如 Niraparib 或 Olaparib）與標準的荷爾蒙療法（如 Abiraterone Acetate 和 Prednisone, AAP）聯用，可以顯著延緩攜帶 HRR 基因突變的晚期攝護腺癌患者的疾病進展，在 BRCA 突變的患者中，甚至可降低近 50% 的疾病進展風險。
+
+2. 免疫檢查點抑制劑（Checkpoint Inhibitors）
+免疫檢查點抑制劑（如 Pembrolizumab）屬於廣義的基因/免疫療法。它們並非直接修改基因，而是通過解除癌細胞對免疫系統的「剎車」，使 T 細胞能重新識別並攻擊腫瘤。
+
+* 最新進展： 雖然大多數攝護腺癌對檢查點抑制劑的反應率不高，但對於那些具有高度微衛星不穩定性（MSI-H）或高腫瘤突變負荷（TMB-H）的患者，此類藥物（如 Pembrolizumab）已被證明極為有效，且療效持久。這再次突顯了在開始治療前進行全面的基因檢測以確認腫瘤遺傳特徵的重要性。
+
+### 挑戰與未來展望
+
+儘管攝護腺癌的基因治療前景光明，但仍面臨幾項重大的技術和臨床挑戰：
+
+#### 挑戰：
+1. 遞送效率與靶向性： 如何將治療基因（無論是病毒載體還是奈米粒子）高效、安全且特異性地遞送到所有腫瘤細胞中，而不傷害健康組織，仍然是核心難題。
+2. 免疫逃逸： 癌細胞具有高度異質性，可能通過下調靶標蛋白（如 PSMA）或上調其他免疫抑制信號來逃脫治療性 T 細胞的攻擊。
+3. 毒性管理： 諸如 CAR-T 療法等強效免疫療法的「脫靶效應」（Off-target Toxicity）可能導致攻擊表達少量相同抗原的健康組織，需要精確控制。
+
+#### 未來展望：
+未來將朝向多模式的聯合治療發展。這包括：
+* 結合基因療法與免疫檢查點抑制劑，以產生協同效應。
+* 利用奈米粒子（Nanoparticle-based）的基因遞送系統，提高精準度並降低免疫原性。
+* 持續開發針對新的抑癌基因（如 ROR2 基因，研究顯示其活化可抑制攝護腺癌轉移）或致癌通路（如 HSF1 通路）的藥物或基因干預手段，為患者提供更個性化、更溫和有效的治療選擇。
+`;
+
+        // 文章摘要 (整合了兩個報告的重點)
+        const summaryHtml = `
+            <ul class="list-disc pl-5 space-y-2">
+                <li>核心趨勢： 針對轉移性去勢抗性攝護腺癌（mCRPC），基因治療和精準標靶藥物是主要突破方向。</li>
+                <li>基因治療概念： 策略涵蓋自殺基因療法、抑癌基因（p53）恢復，以及 CAR-T 細胞等免疫基因療法。</li>
+                <li>臨床重大突破 (PARP 抑制劑)：
+                    <ul class="list-circle pl-4 mt-1 space-y-1">
+                        <li>PARP 抑制劑 (如 Niraparib) 對於攜帶 HRR 基因突變（如 BRCA1/2）的患者採用「合成致死」原理。</li>
+                        <li>AMPLITUDE 試驗 顯示，將 Niraparib 加入標準治療可使整體癌症進展風險降低 37%，其中 BRCA 突變患者的風險更是降低 48%。</li>
+                    </ul>
+                </li>
+                <li>其他標靶： 免疫檢查點抑制劑對高微衛星不穩定性（MSI-H）的特定患者具卓越療效。</li>
+                <li>挑戰與展望： 挑戰仍在於基因遞送效率和免疫逃逸問題，未來朝向多模式聯合治療發展。</li>
+            </ul>
+        `;
+
+        // AMPLITUDE 試驗報告的 HTML 內容 (直接使用使用者提供的結構)
+        const amplitudeReportHtml = `
+            <div class="rounded-xl shadow-none overflow-hidden">
+                <!-- Header Section -->
+                <header class="p-4 bg-blue-700 text-white rounded-t-lg">
+                    <h2 class="text-2xl font-extrabold mb-1">前列腺癌突破：組合療法顯著延緩病情</h2>
+                    <p class="text-blue-200 text-sm">研究由倫敦大學學院 (UCL) 研究人員主導</p>
+                </header>
+
+                <!-- Main Content Section -->
+                <main class="p-6 space-y-8">
+                    <!-- 導言 -->
+                    <section>
+                        <h3 class="text-xl font-bold text-gray-800 border-l-4 border-blue-500 pl-3 mb-4">研究亮點</h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            一項由倫敦大學學院 (UCL) 研究人員主導的國際大型研究顯示，結合兩種癌症藥物可以顯著減緩一種嚴重且常致命的<span class="highlight">前列腺癌進展</span>，特別是對於擁有特定基因突變的男性。
+                        </p>
+                        <p class="mt-3 text-gray-700 leading-relaxed">
+                            這項研究發表在<span class="highlight">《自然醫學》</span>期刊上，名為 <span class="highlight">AMPLITUDE</span> 的第三期臨床試驗探討了將 <span class="highlight">PARP 抑制劑尼拉帕利 (niraparib)</span> 添加到標準前列腺癌治療（阿比特龍醋酸酯和潑尼松，AAP）中的效果。
+                        </p>
+                    </section>
+
+                    <!-- 試驗細節及結果 -->
+                    <section>
+                        <h3 class="text-xl font-bold text-gray-800 border-l-4 border-blue-500 pl-3 mb-4">試驗設計與顯著成效</h3>
+
+                        <div class="space-y-4">
+                            <p class="text-gray-700 leading-relaxed">
+                                研究針對的是已經擴散至身體其他部位的<span class="highlight">晚期前列腺癌患者</span>，所有參與者均有涉及<span class="highlight">同源重組修復 (HRR) 的基因突變</span>。這些基因的功能失常會導致癌細胞快速增殖和擴散，約四分之一的晚期前列腺癌患者在此階段有 HRR 相關基因的突變，包括 <code class="bg-gray-100 px-1 rounded text-red-600">BRCA1</code>、<code class="bg-gray-100 px-1 rounded text-red-600">BRCA2</code>、<code class="bg-gray-100 px-1 rounded text-red-600">CHEK2</code> 和 <code class="bg-gray-100 px-1 rounded text-red-600">PALB2</code>。
+                            </p>
+
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <p class="font-semibold text-blue-800 mb-2">臨床試驗數據：</p>
+                                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                    <li><span class="font-medium">參與人數：</span>696名來自32個國家的男性。</li>
+                                    <li><span class="font-medium">分組：</span>一半接受尼拉帕利和標準治療的組合，另一半接受標準治療和安慰劑。</li>
+                                    <li><span class="font-medium">結果：</span>經過 30.8 個月的中位隨訪期後，接受藥物組合的患者在疾病進展方面顯著受益。</li>
+                                    <li><span class="font-medium">風險降低：</span>整體<span class="text-green-600 font-bold">降低了 37%</span> 的癌症進展風險。</li>
+                                    <li><span class="font-medium">BRCA突變患者：</span>對於具有 BRCA1 或 BRCA2 突變的患者，風險更顯著地<span class="text-green-600 font-bold">降低了 48%</span>。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 專家評論與副作用 -->
+                    <section>
+                        <h3 class="text-xl font-bold text-gray-800 border-l-4 border-blue-500 pl-3 mb-4">專家觀點與治療考量</h3>
+
+                        <blockquote class="border-l-4 border-yellow-500 pl-4 italic text-gray-600 bg-yellow-50 p-4 rounded-lg">
+                            <p>
+                                UCL 癌症研究所的 <span class="font-semibold text-gray-800">Gerhardt Attard 教授</span>表示，儘管目前的標準治療對大多數晚期前列腺癌患者非常有效，但仍有一小部分的患者的受益有限。
+                            </p>
+                            <p class="mt-2">
+                                「這項研究結果強調了在診斷時進行<span class="highlight bg-yellow-200">廣泛基因檢測的重要性</span>，並為那些最有可能受益的患者提供針對性治療。」
+                            </p>
+                        </blockquote>
+
+                        <div class="mt-6">
+                            <p class="font-semibold text-gray-800 mb-2">治療的耐受性與展望：</p>
+                            <p class="text-gray-700 leading-relaxed">
+                                儘管這種治療通常耐受性良好，但尼拉帕利組的副作用較為常見，包括<span class="text-red-600 font-medium">貧血和高血壓</span>，有 25% 的患者需要輸血。血管如此，整體的停藥率仍然較低。
+                            </p>
+                            <p class="text-gray-700 leading-relaxed mt-2">
+                                研究作者指出，儘管結果令人鼓舞，但<span class="highlight">仍需進一步研究</span>以確認長期生存益處，並探索新影像技術和更廣泛的基因檢測的影響。
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- 全球統計 -->
+                    <section>
+                        <h3 class="text-xl font-bold text-gray-800 border-l-4 border-blue-500 pl-3 mb-4">前列腺癌統計數據</h3>
+
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <ul class="text-gray-700 space-y-2">
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.707a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="font-medium">全球診斷：</span>每年約 <span class="font-bold text-red-600">150萬</span> 男性被診斷為前列腺癌。
+                                </li>
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="font-medium">英國情況：</span>英國前列腺癌是男性中最常見的癌症。
+                                </li>
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9 12a1 1 0 10-2 0v4a1 1 0 001 1h4a1 1 0 001-1v-4a1 1 0 10-2 0v3h-2v-3z" />
+                                        <path fill-rule="evenodd" d="M10 3a1 1 0 00-1 1v1h2V4a1 1 0 00-1-1zM5 4a1 1 0 00-1 1v1h2V5a1 1 0 00-1-1zm10 0a1 1 0 00-1 1v1h2V5a1 1 0 00-1-1zM4 9a1 1 0 00-1 1v1h2v-1a1 1 0 00-1-1zm14 0a1 1 0 00-1 1v1h2v-1a1 1 0 00-1-1zM4 14a1 1 0 00-1 1v1h2v-1a1 1 0 00-1-1zm14 0a1 1 0 00-1 1v1h2v-1a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="font-medium">英國新診斷：</span>每年超過 <span class="font-bold">56,000</span> 名男性。
+                                </li>
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.75 7.75a.75.75 0 00-1.5 0v3.5c0 .414.336.75.75.75h3.5a.75.75 0 000-1.5H8.75V7.75z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="font-medium">英國死亡人數：</span>約 <span class="font-bold text-red-600">12,000</span> 人死於此病。
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </main>
+
+                <!-- Footer Section -->
+                <footer class="p-4 bg-gray-100 text-gray-600 text-xs text-center border-t border-gray-200 rounded-b-lg">
+                    <p>本AMPLITUDE試驗由<span class="font-medium">強生公司 (Janssen)</span> 研究與開發部門贊助。</p>
+                    <p class="mt-1">此為獨立研究報告摘要。</p>
+                </footer>
+            </div>
+        `;
+
+        /**
+         * 將 Markdown 文本轉換為 HTML 並渲染到頁面
+         * @param {string} markdownText - Markdown 文本
+         * @param {string} targetId - HTML 元素 ID
+         */
+        function renderMarkdownToHtml(markdownText, targetId) {
+            const targetElement = document.getElementById(targetId);
+            
+            // 基礎 Markdown 到 HTML 轉換
+            let htmlContent = markdownText
+                .split('\n').map(line => {
+                    if (line.startsWith('## ')) {
+                        // 轉換二級標題
+                        return `<h2 class="text-2xl font-bold text-teal-700 mt-6 mb-3 border-b-2 border-teal-500 pb-1">${line.substring(3).trim()}</h2>`;
+                    } else if (line.startsWith('### ')) {
+                        // 轉換三級標題
+                        return `<h3 class="text-xl font-semibold text-gray-800 mt-4 mb-2">${line.substring(4).trim()}</h3>`;
+                    } else if (line.startsWith('* ')) {
+                        // 處理列表項
+                        return `<p class="mb-2 ml-4 before:content-['•'] before:mr-2">${line.substring(2).trim()}</p>`;
+                    } else if (line.trim() !== '') {
+                        // 轉換為段落
+                        let processedLine = line.trim();
+                        return `<p class="mb-4 leading-relaxed">${processedLine}</p>`;
+                    }
+                    return '';
+                }).join('');
+
+            targetElement.innerHTML = htmlContent;
+        }
+
+        /**
+         * 通用切換內容顯示/隱藏的函數
+         * @param {string} containerId - 內容容器的 ID
+         * @param {string} iconId - 圖標元素的 ID
+         * @param {string} textId - 按鈕文字元素的 ID
+         */
+        function toggleContent(containerId, iconId, textId) {
+            const container = document.getElementById(containerId);
+            const buttonText = document.getElementById(textId);
+            const toggleIcon = document.getElementById(iconId);
+            const isExpanded = container.classList.contains('expanded');
+
+            let iconOn, iconOff, textOn, textOff;
+
+            if (containerId === 'originalArticleContainer') {
+                // 原始文章
+                iconOn = 'eye-off';
+                iconOff = 'eye';
+                textOn = '收起基因治療綜合報告';
+                textOff = '閱讀基因治療綜合報告';
+            } else {
+                // AMPLITUDE 報告
+                iconOn = 'x-circle';
+                iconOff = 'external-link';
+                textOn = '收起 AMPLITUDE 試驗報告';
+                textOff = '閱讀 AMPLITUDE 試驗報告';
+            }
+
+            if (isExpanded) {
+                container.classList.remove('expanded');
+                buttonText.textContent = textOff;
+                toggleIcon.setAttribute('data-lucide', iconOff);
+            } else {
+                container.classList.add('expanded');
+                buttonText.textContent = textOn;
+                toggleIcon.setAttribute('data-lucide', iconOn);
+            }
+            // 重新渲染 Lucide 圖標以確保切換生效
+            lucide.createIcons();
+        }
+
+        // 初始化：渲染摘要和兩個文章區塊
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. 渲染摘要
+            document.getElementById('articleSummary').innerHTML = summaryHtml;
+            
+            // 2. 渲染原始文章 (Markdown 轉 HTML)
+            // 由於移除了 Markdown 內的 H2 標題，這裡的 H2 標題將從 HTML 結構中保留
+            renderMarkdownToHtml(fullMarkdown, 'articleContent');
+
+            // 3. 渲染 AMPLITUDE 報告 (直接注入 HTML)
+            document.getElementById('amplitudeReportContainer').innerHTML = amplitudeReportHtml;
+            
+            // 4. 確保所有 Lucide Icons 被渲染
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
+
